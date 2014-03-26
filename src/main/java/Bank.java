@@ -15,4 +15,7 @@ public class Bank {
     public int getAccount(int id) {
         return accounts[id-1];
     }
+    public String getString(String msg) {
+        return msg;
+    }
 }

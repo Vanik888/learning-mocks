@@ -12,26 +12,26 @@ import org.testng.annotations.Test;
  * Created by vanik on 26.03.14.
  */
 public class TestBank {
-    Bank mockedBank =  mock(Bank.class);
+    Bank mockedBank =  spy(new Bank());
     @BeforeMethod
     public void setUp() {
         System.out.println("Before method");
     }
     @Test
-    public void tesBank() {
+    public void testBank() {
         System.out.println("testMethod");
-        //.getAccount(10) was called 2 times
-        mockedBank.getAccount(10);
-        mockedBank.getAccount(10);
-        verify(mockedBank, times(2)).getAccount(10);
+        when(mockedBank.getString("hello")).thenReturn("hello");
 
-        //getAccount(100) was called atLeast 1 time
-        mockedBank.getAccount(100);
-        mockedBank.getAccount(100);
-        mockedBank.getAccount(100);
-        verify(mockedBank, atLeast(1)).getAccount(100);
-        //getAccount(100) was called atMost 2 times
-        verify(mockedBank, atMost(2)).getAccount(100);
+
+        System.out.println("account 1 = " + mockedBank.getAccount(1));
+        System.out.println("account 1 = "+ mockedBank.getAccount(1));
+        System.out.println("spyed method in use= " +mockedBank.getString("hy"));
+        //is ok there was one usage , method is not overaged
+        verify(mockedBank).getString("hy");
+        //is not ok because there are no usage this method with this argument
+        verify(mockedBank).getString("hello");
+        //all ok
+        verify(mockedBank, times(2)).getAccount(1);
     }
     @AfterMethod
     public void tearDown() {
